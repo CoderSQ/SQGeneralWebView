@@ -1,12 +1,15 @@
 PODS:
+  - MJRefresh (3.1.12)
   - WebViewJavascriptBridge (5.0.5)
 
 DEPENDENCIES:
+  - MJRefresh (~> 3.1.12)
   - WebViewJavascriptBridge (~> 5.0.5)
 
 SPEC CHECKSUMS:
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   WebViewJavascriptBridge: a4d502315f1b8d9a51cd6a9174147ed567ec3bc5
 
-PODFILE CHECKSUM: 1f620bae253f91fc7a4c00dd2d74a52482211a5a
+PODFILE CHECKSUM: 4aedbceb1bcf0878c8342daac337159a3a09d552
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.beta.2

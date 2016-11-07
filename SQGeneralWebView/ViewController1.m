@@ -11,7 +11,7 @@
 #import "SQGeneralWebview.h"
 #import <WebKit/WebKit.h>
 
-#import "MJRefresh.h"
+#import <MJRefresh.h>
 
 @interface ViewController1 () <SQGeneralWebviewDelegate>
 

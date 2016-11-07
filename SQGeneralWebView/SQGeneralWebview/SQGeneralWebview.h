@@ -30,7 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SQGeneralWebview : UIView
 
 /***  使用的真实的webview */
-@property (nonatomic, strong, nonnull) id webView;
+@property (nonatomic, strong,readonly, nonnull) id webView;
+
+/** 当前是否是wkwebview */
+@property (nonatomic, assign, readonly) BOOL isWKWebView;
+
 
 //@property (nonatomic, strong, readonly) NSURLRequest* originRequest;
 @property (nonatomic, weak, nullable) id<SQGeneralWebviewDelegate> delegate;
@@ -44,6 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 //---- UI 或者 WK 的API
 @property (nonatomic, readonly, nonnull) UIScrollView *scrollView;
+
+/** 调整页面大小以适应屏幕 */
+@property (nonatomic) BOOL scalesPageToFit;
+
 
 - (nonnull instancetype)initWithFrame:(CGRect)frame;
 
@@ -60,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  重新加载当前页面
  */
 - (void)reload;
+
 
 #pragma mark - interaction with js  use webviewjavascript
 
