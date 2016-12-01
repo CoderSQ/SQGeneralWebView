@@ -1,8 +1,8 @@
 //
 //  main.m
-//  SQGeneralWebView
+//  SQGeneralWebViewDemo
 //
-//  Created by apple on 16/8/2.
+//  Created by apple on 2016/11/29.
 //  Copyright © 2016年 zsq. All rights reserved.
 //
 

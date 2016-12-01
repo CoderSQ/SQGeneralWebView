@@ -1,18 +1,18 @@
 //
-//  SQGeneralWebViewUITests.m
-//  SQGeneralWebViewUITests
+//  SQGeneralWebViewDemoUITests.m
+//  SQGeneralWebViewDemoUITests
 //
-//  Created by apple on 16/8/2.
+//  Created by apple on 2016/11/29.
 //  Copyright © 2016年 zsq. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface SQGeneralWebViewUITests : XCTestCase
+@interface SQGeneralWebViewDemoUITests : XCTestCase
 
 @end
 
-@implementation SQGeneralWebViewUITests
+@implementation SQGeneralWebViewDemoUITests
 
 - (void)setUp {
     [super setUp];
