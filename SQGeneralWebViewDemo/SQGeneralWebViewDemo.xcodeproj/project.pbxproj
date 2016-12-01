@@ -19,7 +19,7 @@
 		18135D781DED6CA5005BE46F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18135D771DED6CA5005BE46F /* WebKit.framework */; };
 		18135D7E1DED71C6005BE46F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18135D7A1DED71C6005BE46F /* LaunchScreen.storyboard */; };
 		18135D7F1DED71C6005BE46F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18135D7C1DED71C6005BE46F /* Main.storyboard */; };
-		18C8A0991DEFBCF100E1A8E6 /* SQGeneralWebview.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C8A0981DEFBCF100E1A8E6 /* SQGeneralWebview.m */; };
+		18C8A09A1DEFC8DE00E1A8E6 /* SQGeneralWebview.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C8A0981DEFBCF100E1A8E6 /* SQGeneralWebview.m */; };
 		9A676D3A1FDF29AF9CEF68DC /* libPods-SQGeneralWebViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA7B67810F725950D0769F2 /* libPods-SQGeneralWebViewDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -392,11 +392,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18C8A09A1DEFC8DE00E1A8E6 /* SQGeneralWebview.m in Sources */,
 				18135D6D1DED2F84005BE46F /* ViewController1.m in Sources */,
 				18135D6B1DED2F84005BE46F /* TestViewController.m in Sources */,
 				18135D701DED2F90005BE46F /* AppDelegate.m in Sources */,
 				18135D6C1DED2F84005BE46F /* ViewController.m in Sources */,
-				18C8A0991DEFBCF100E1A8E6 /* SQGeneralWebview.m in Sources */,
 				18135D241DED2D1A005BE46F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
