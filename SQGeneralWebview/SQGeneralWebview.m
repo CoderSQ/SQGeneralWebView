@@ -215,6 +215,7 @@
 
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
+    [self callback_webViewDidStartLoad];
 }
 
 /* @abstract Invoked when a server redirect is received for the main
