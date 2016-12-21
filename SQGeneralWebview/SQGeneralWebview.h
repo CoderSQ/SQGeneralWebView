@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WebViewJavascriptBridge.h"
-#import "WKWebViewJavascriptBridge.h"
+#import <WebViewJavascriptBridge.h>
+#import <WKWebViewJavascriptBridge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 //#import <sys/cdefs.h>
