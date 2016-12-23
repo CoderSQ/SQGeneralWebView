@@ -1,5 +1,5 @@
 //
-//  SQGeneralWebview.h
+//  SQGeneralWebView.h
 //  SQGeneralWebView
 //
 //  Created by apple on 16/8/2.
@@ -13,21 +13,21 @@
 NS_ASSUME_NONNULL_BEGIN
 //#import <sys/cdefs.h>
 
-@class SQGeneralWebview;
+@class SQGeneralWebView;
 
-@protocol SQGeneralWebviewDelegate <NSObject>
+@protocol SQGeneralWebViewDelegate <NSObject>
 
 @optional
 
-- (BOOL)sq_webView:(nonnull SQGeneralWebview *)webView shouldStartLoadWithRequest:(nonnull NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+- (BOOL)sq_webView:(nonnull SQGeneralWebView *)webView shouldStartLoadWithRequest:(nonnull NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
 
-- (void)sq_webViewDidStartLoad:(nonnull SQGeneralWebview *)webView;
-- (void)sq_webViewDidFinishLoad:(nonnull SQGeneralWebview *)webView;
-- (void)sq_webView:(nonnull SQGeneralWebview *)webView didFailLoadWithError:(nullable NSError *)error;
+- (void)sq_webViewDidStartLoad:(nonnull SQGeneralWebView *)webView;
+- (void)sq_webViewDidFinishLoad:(nonnull SQGeneralWebView *)webView;
+- (void)sq_webView:(nonnull SQGeneralWebView *)webView didFailLoadWithError:(nullable NSError *)error;
 
 @end
 
-@interface SQGeneralWebview : UIView
+@interface SQGeneralWebView : UIView
 
 /***  使用的真实的webview */
 @property (nonatomic, strong,readonly, nonnull) id webView;
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 //@property (nonatomic, strong, readonly) NSURLRequest* originRequest;
-@property (nonatomic, weak, nullable) id<SQGeneralWebviewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SQGeneralWebViewDelegate> delegate;
 
 //webview的title 支持kvo
 @property (nonatomic, copy, readonly) NSString *title;

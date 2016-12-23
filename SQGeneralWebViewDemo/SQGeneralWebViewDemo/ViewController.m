@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-#import "SQGeneralWebview.h"
+#import "SQGeneralWebView.h"
 #import <MJRefresh.h>
 
 #import <WebKit/WebKit.h>
@@ -18,9 +18,9 @@
 
 //#import "WKWebViewJavascriptBridge.h"
 
-@interface ViewController () <SQGeneralWebviewDelegate>
+@interface ViewController () <SQGeneralWebViewDelegate>
 
-@property (nonatomic, strong) SQGeneralWebview *webViews;
+@property (nonatomic, strong) SQGeneralWebView *webViews;
 @property (nonatomic, strong) WebViewJavascriptBridge *bridge;
 
 
@@ -49,34 +49,34 @@
 }
 
 
-#pragma mark - SQGeneralWebviewDelegate
+#pragma mark - SQGeneralWebViewDelegate
 
-- (BOOL)sq_webView:(SQGeneralWebview *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)sq_webView:(SQGeneralWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     return YES;
 }
 
-- (void)sq_webViewDidStartLoad:(SQGeneralWebview *)webView {
+- (void)sq_webViewDidStartLoad:(SQGeneralWebView *)webView {
     NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
-- (void)sq_webViewDidFinishLoad:(SQGeneralWebview *)webView {
+- (void)sq_webViewDidFinishLoad:(SQGeneralWebView *)webView {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     [self.webViews.scrollView.mj_header endRefreshing];
     
     NSLog(@"request = %@", self.webViews.currentRequest);
 }
 
-- (void)sq_webView:(SQGeneralWebview *)webView didFailLoadWithError:(NSError *)error {
+- (void)sq_webView:(SQGeneralWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     [self.webViews.scrollView.mj_header endRefreshing];
 }
 
 #pragma getter
-- (SQGeneralWebview *)webViews {
+- (SQGeneralWebView *)webViews {
     if (_webViews == nil) {
         NSLog(@"%@", NSStringFromCGRect(self.view.bounds));
-        _webViews = [[SQGeneralWebview alloc] initWithFrame:self.view.bounds];
+        _webViews = [[SQGeneralWebView alloc] initWithFrame:self.view.bounds];
         _webViews.delegate = self;
         
         [self.view addSubview:_webViews];

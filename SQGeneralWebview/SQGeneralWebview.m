@@ -1,19 +1,19 @@
 //
-//  SQGeneralWebview.m
+//  SQGeneralWebView.m
 //  SQGeneralWebView
 //
 //  Created by apple on 16/8/2.
 //  Copyright © 2016年 zsq. All rights reserved.
 //
 
-#import "SQGeneralWebview.h"
+#import "SQGeneralWebView.h"
 #import <WebKit/WebKit.h>
 #import <objc/runtime.h>
 
 #define kObserverKeyTitle @"title"
 #define kObserverKeyProgress @"estimatedProgress"
 
-@interface SQGeneralWebview () <UIWebViewDelegate, WKUIDelegate, WKNavigationDelegate>
+@interface SQGeneralWebView () <UIWebViewDelegate, WKUIDelegate, WKNavigationDelegate>
 
 @property (nonatomic, strong, readwrite, nonnull) id webView;
 @property (nonatomic, assign, readwrite) BOOL isWKWebView;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation SQGeneralWebview
+@implementation SQGeneralWebView
 
 #pragma mark - lifecycle
 
@@ -51,7 +51,7 @@
 
 - (void)dealloc {
     
-    NSLog(@"SQGeneralWebview dealloc");
+    NSLog(@"SQGeneralWebView dealloc");
     if (_isWKWebView) {
         WKWebView *webView = _webView;
         webView.UIDelegate = nil;
