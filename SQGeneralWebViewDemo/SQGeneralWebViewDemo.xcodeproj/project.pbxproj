@@ -126,6 +126,7 @@
 				18C17D421E0CFFB000B37D82 /* SQGeneralWebView */,
 				18135D6E1DED2F90005BE46F /* AppDelegate.h */,
 				18135D6F1DED2F90005BE46F /* AppDelegate.m */,
+				18C8A09B1DEFCA0B00E1A8E6 /* SQGeneralWebview */,
 				18135D651DED2F84005BE46F /* TestViewController.h */,
 				18135D661DED2F84005BE46F /* TestViewController.m */,
 				18135D671DED2F84005BE46F /* ViewController.h */,
