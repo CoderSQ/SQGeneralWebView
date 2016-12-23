@@ -17,9 +17,9 @@
 		18135D701DED2F90005BE46F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18135D6F1DED2F90005BE46F /* AppDelegate.m */; };
 		18135D761DED6CA0005BE46F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18135D751DED6CA0005BE46F /* UIKit.framework */; };
 		18135D781DED6CA5005BE46F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18135D771DED6CA5005BE46F /* WebKit.framework */; };
-		18135D7E1DED71C6005BE46F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18135D7A1DED71C6005BE46F /* LaunchScreen.storyboard */; };
-		18135D7F1DED71C6005BE46F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18135D7C1DED71C6005BE46F /* Main.storyboard */; };
-		18C8A09E1DEFCA0B00E1A8E6 /* SQGeneralWebview.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C8A09D1DEFCA0B00E1A8E6 /* SQGeneralWebview.m */; };
+		18AF792A1E0A52230008339C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18AF79261E0A52230008339C /* LaunchScreen.storyboard */; };
+		18AF792B1E0A52230008339C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18AF79281E0A52230008339C /* Main.storyboard */; };
+		18C17D451E0CFFB000B37D82 /* SQGeneralWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C17D441E0CFFB000B37D82 /* SQGeneralWebView.m */; };
 		9A676D3A1FDF29AF9CEF68DC /* libPods-SQGeneralWebViewDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA7B67810F725950D0769F2 /* libPods-SQGeneralWebViewDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -61,10 +61,10 @@
 		18135D6F1DED2F90005BE46F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		18135D751DED6CA0005BE46F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		18135D771DED6CA5005BE46F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		18135D7B1DED71C6005BE46F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		18135D7D1DED71C6005BE46F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
-		18C8A09C1DEFCA0B00E1A8E6 /* SQGeneralWebview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQGeneralWebview.h; sourceTree = "<group>"; };
-		18C8A09D1DEFCA0B00E1A8E6 /* SQGeneralWebview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQGeneralWebview.m; sourceTree = "<group>"; };
+		18AF79271E0A52230008339C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SQGeneralWebViewDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		18AF79291E0A52230008339C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SQGeneralWebViewDemo/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
+		18C17D431E0CFFB000B37D82 /* SQGeneralWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQGeneralWebView.h; sourceTree = "<group>"; };
+		18C17D441E0CFFB000B37D82 /* SQGeneralWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQGeneralWebView.m; sourceTree = "<group>"; };
 		1992172D5A0AAEA159F4E611 /* Pods-SQGeneralWebViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQGeneralWebViewDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SQGeneralWebViewDemo/Pods-SQGeneralWebViewDemo.release.xcconfig"; sourceTree = "<group>"; };
 		1AA7B67810F725950D0769F2 /* libPods-SQGeneralWebViewDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SQGeneralWebViewDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1664EE933104DD5BD2221B6 /* Pods-SQGeneralWebViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQGeneralWebViewDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SQGeneralWebViewDemo/Pods-SQGeneralWebViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,8 +123,8 @@
 		18135D211DED2D1A005BE46F /* SQGeneralWebViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				18C17D421E0CFFB000B37D82 /* SQGeneralWebView */,
 				18135D6E1DED2F90005BE46F /* AppDelegate.h */,
-				18C8A09B1DEFCA0B00E1A8E6 /* SQGeneralWebview */,
 				18135D6F1DED2F90005BE46F /* AppDelegate.m */,
 				18135D651DED2F84005BE46F /* TestViewController.h */,
 				18135D661DED2F84005BE46F /* TestViewController.m */,
@@ -169,21 +169,20 @@
 		18135D791DED71C6005BE46F /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				18135D7A1DED71C6005BE46F /* LaunchScreen.storyboard */,
-				18135D7C1DED71C6005BE46F /* Main.storyboard */,
+				18AF79261E0A52230008339C /* LaunchScreen.storyboard */,
+				18AF79281E0A52230008339C /* Main.storyboard */,
 			);
 			name = Base.lproj;
 			path = ../../../../.Trash/SQGeneralWebView1/Base.lproj;
 			sourceTree = "<group>";
 		};
-		18C8A09B1DEFCA0B00E1A8E6 /* SQGeneralWebview */ = {
+		18C17D421E0CFFB000B37D82 /* SQGeneralWebView */ = {
 			isa = PBXGroup;
 			children = (
-				18C8A09C1DEFCA0B00E1A8E6 /* SQGeneralWebview.h */,
-				18C8A09D1DEFCA0B00E1A8E6 /* SQGeneralWebview.m */,
+				18C17D431E0CFFB000B37D82 /* SQGeneralWebView.h */,
+				18C17D441E0CFFB000B37D82 /* SQGeneralWebView.m */,
 			);
-			name = SQGeneralWebview;
-			path = ../../SQGeneralWebview;
+			path = SQGeneralWebView;
 			sourceTree = "<group>";
 		};
 		9D103D323E20AB6593401990 /* Pods */ = {
@@ -317,9 +316,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18135D7E1DED71C6005BE46F /* LaunchScreen.storyboard in Resources */,
+				18AF792B1E0A52230008339C /* Main.storyboard in Resources */,
 				18135D2F1DED2D1A005BE46F /* Assets.xcassets in Resources */,
-				18135D7F1DED71C6005BE46F /* Main.storyboard in Resources */,
+				18AF792A1E0A52230008339C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +395,7 @@
 				18135D6B1DED2F84005BE46F /* TestViewController.m in Sources */,
 				18135D701DED2F90005BE46F /* AppDelegate.m in Sources */,
 				18135D6C1DED2F84005BE46F /* ViewController.m in Sources */,
-				18C8A09E1DEFCA0B00E1A8E6 /* SQGeneralWebview.m in Sources */,
+				18C17D451E0CFFB000B37D82 /* SQGeneralWebView.m in Sources */,
 				18135D241DED2D1A005BE46F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,18 +432,18 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		18135D7A1DED71C6005BE46F /* LaunchScreen.storyboard */ = {
+		18AF79261E0A52230008339C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				18135D7B1DED71C6005BE46F /* Base */,
+				18AF79271E0A52230008339C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		18135D7C1DED71C6005BE46F /* Main.storyboard */ = {
+		18AF79281E0A52230008339C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				18135D7D1DED71C6005BE46F /* Base */,
+				18AF79291E0A52230008339C /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

@@ -14,7 +14,7 @@
 #import <WebKit/WebKit.h>
 #import "ViewController1.h"
 
-#import "WebViewJavascriptBridge.h"
+//#import "WebViewJavascriptBridge.h"
 
 //#import "WKWebViewJavascriptBridge.h"
 
