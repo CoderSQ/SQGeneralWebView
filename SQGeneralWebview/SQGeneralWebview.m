@@ -57,7 +57,7 @@
     if (self) {
         Class cls = NSClassFromString(@"WKWebView");
         if (cls) {
-            _isWKWebView = NO;
+            _isWKWebView = YES;
         } else {
             _isWKWebView = NO;
         }
