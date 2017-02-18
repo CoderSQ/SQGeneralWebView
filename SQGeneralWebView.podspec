@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SQGeneralWebView"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "This is a gengeral WebView ,use WebViewJavaScriptBridge as the bridge with native."
 
   s.homepage     = "https://github.com/CoderSQ/SQGeneralWebView.git"
