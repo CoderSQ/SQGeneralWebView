@@ -13,6 +13,8 @@
 #define kObserverKeyTitle @"title"
 #define kObserverKeyProgress @"estimatedProgress"
 
+#define kOriginHistoryViewX (90)
+
 @interface SQGeneralWebView () <UIWebViewDelegate, WKUIDelegate, WKNavigationDelegate>
 
 @property (nonatomic, strong, readwrite, nonnull) id webView;
@@ -29,6 +31,20 @@
 
 @property (nonatomic, strong) CADisplayLink *link;
 
+@property (nonatomic, strong) UIPanGestureRecognizer *panGes;
+// 手势的起始位置
+@property (nonatomic, assign) CGFloat gesPosStartX;
+
+
+@property (nonatomic, strong) NSMutableArray *historyStack;
+// 历史图片的view
+@property (nonatomic, strong) UIImageView *historyView;
+@property (nonatomic, strong) UIView *historyMaskView;
+
+// 保存当前链接是否是回到上一个页面
+@property (nonatomic, assign) BOOL isGoBack;
+
+
 @end
 
 @implementation SQGeneralWebView
@@ -41,10 +57,11 @@
     if (self) {
         Class cls = NSClassFromString(@"WKWebView");
         if (cls) {
-            _isWKWebView = YES;
+            _isWKWebView = NO;
         } else {
             _isWKWebView = NO;
         }
+        [self setPanGesEnable:YES];
     }
     return self;
 }
@@ -168,6 +185,18 @@
     }
 }
 
+- (void)goBack {
+    
+    if ([self.webView respondsToSelector:@selector(goBack)]) {
+        IMP loadImp = [self.webView methodForSelector:@selector(goBack)];
+        void (*func)(id, SEL) = (void *)loadImp;
+        func(self.webView, @selector(goBack));
+    }
+    
+    [self.historyStack removeLastObject];
+    self.isGoBack = YES;
+}
+
 #pragma mark - kvo
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:kObserverKeyProgress]) {
@@ -286,7 +315,9 @@
     
     self.estimatedProgress = 0.0f;
     [self.timer setFireDate:[NSDate distantPast]];
-    return [self callback_webViewShouldStartLoadWithRequest:request navigationType:navigationType];
+    BOOL ret = [self callback_webViewShouldStartLoadWithRequest:request navigationType:navigationType];
+   
+    return ret;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -313,16 +344,23 @@
 #pragma mark - callback prive methods
 
 - (BOOL)callback_webViewShouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(NSInteger)navigationType {
-    
+   
+    BOOL ret = YES;
     if ([self.delegate respondsToSelector:@selector(sq_webView:shouldStartLoadWithRequest:navigationType:)]) {
         
         if (navigationType == -1) {
             navigationType = WKNavigationTypeOther;
         }
-        return [self.delegate sq_webView:self shouldStartLoadWithRequest:request navigationType:navigationType];
+        ret = [self.delegate sq_webView:self shouldStartLoadWithRequest:request navigationType:navigationType];
     }
     
-    return YES;
+    if (ret && self.panGesEnable && self.currentRequest.URL.absoluteString.length && !self.isGoBack) { // 允许加载下一个页面，并且手势返回可用，并且当前加载的页面不是由goback加载的, 才需要保存之前的截图
+        UIImage *curPreview = [self screenshotView];
+        [self.historyStack addObject:@{@"preview":curPreview, @"url":[request.URL description]}];
+    }
+    
+    
+    return ret;
 }
 
 - (void)callback_webViewDidStartLoad {
@@ -337,6 +375,14 @@
     if ([self.delegate respondsToSelector:@selector(sq_webViewDidFinishLoad:)]) {
         [self.delegate sq_webViewDidFinishLoad:self];
     }
+    
+    // 页面加载完成后，移除goback状态
+    if (self.isGoBack) {
+        self.isGoBack = NO;
+        [self sendSubviewToBack:self.historyView];
+        [self.webView setFrame:self.bounds];
+
+    }
 }
 
 - (void)callback_webViewDidFailLoadWithError:(NSError *)error {
@@ -344,7 +390,15 @@
     if ([self.delegate respondsToSelector:@selector(sq_webView:didFailLoadWithError:)]) {
         [self.delegate sq_webView:self didFailLoadWithError:error];
     }
+    
+    // 页面加载完成后，移除goback状态
+    if (self.isGoBack) {
+        self.isGoBack = NO;
+        [self sendSubviewToBack:self.historyView];
+        [self.webView setFrame:self.bounds];
+    }
 }
+
 
 #pragma mark - public methods
 - (void)registerHandler:(NSString*)handlerName handler:(WVJBHandler)handler {
@@ -363,6 +417,26 @@
     [self.bridge callHandler:handlerName data:data responseCallback:responseCallback];
 }
 
+#pragma mark - 开启webview右滑返回上一个页面, 默认支持为YES
+- (void) setPanGesEnable:(BOOL)panGesEnable {
+    _panGesEnable = panGesEnable;
+    if (panGesEnable) {
+        
+        [self addSubview:self.historyView];
+        [self.webView addGestureRecognizer:self.panGes];
+        [self sendSubviewToBack:self.historyView];
+        [self.historyView addSubview:self.historyMaskView];
+    } else {
+        
+        [self.historyView removeFromSuperview];
+        [self.historyMaskView removeFromSuperview];
+        [self removeGestureRecognizer:self.panGes];
+
+        self.panGes = nil;
+        self.historyView = nil;
+    }
+}
+
 #pragma mark -events
 - (void) progressTimerDidFire {
     
@@ -377,7 +451,82 @@
     }
 }
 
+- (void )panGes:(UIPanGestureRecognizer*)panGes {
+
+    if ([self.webView canGoBack] && self.historyStack.count) {
+
+        if (panGes.state == UIGestureRecognizerStateBegan) {
+           
+            self.gesPosStartX = [panGes locationInView:self.window].x;
+        } else if (panGes.state == UIGestureRecognizerStateChanged) {
+            
+            CGFloat marginX = [panGes locationInView:self.window].x - self.gesPosStartX;
+            
+            if (marginX > 0) {
+                [self setupSubViewsFrameWithMargin:marginX];
+            }
+            
+        } else if (panGes.state == UIGestureRecognizerStateEnded) {
+            
+            CGFloat marginX = [panGes locationInView:self.window].x - self.gesPosStartX;
+            if (marginX > self.bounds.size.width * 0.5) {
+                
+                [UIView animateWithDuration:0.25 animations:^{
+                    
+                    CGRect frame = [self.webView frame];
+                    frame.origin.x = frame.size.width;
+                    [self.webView setFrame:frame];
+                    self.historyView.frame = self.bounds;
+                    self.historyMaskView.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    [self bringSubviewToFront:self.historyView];
+                    [self goBack];
+                }];
+            } else {
+                
+                [UIView animateWithDuration:0.25 animations:^{
+                    
+                    [self.webView setFrame:self.bounds];
+                } completion:nil];
+            }
+        }
+    }
+}
+
 #pragma mark - private
+
+- (void) setupSubViewsFrameWithMargin:(CGFloat) marginX {
+    
+    CGRect frame = [self.webView frame];
+    frame.origin.x = marginX;
+    [self.webView setFrame:frame];
+    
+    CGRect viewFrame = self.historyView.frame;
+    CGFloat viewX =  kOriginHistoryViewX * marginX / self.bounds.size.width;
+    viewFrame.origin.x = viewX - kOriginHistoryViewX;
+    
+    self.historyView.frame = viewFrame;
+    self.historyView.image = [[self.historyStack lastObject] objectForKey:@"preview"];
+    
+    self.historyMaskView.alpha = 0.6 * ( 1 - marginX / self.bounds.size.width);
+}
+
+// 获取当前视图截屏
+- (UIImage *)screenshotView{
+    UIGraphicsBeginImageContextWithOptions(self.frame.size, YES, 0.0);
+    
+    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+        [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
+    }
+    else{
+        [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    }
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+
 //将文件copy到tmp目录
 - (NSURL *)fileURLForBuggyWKWebView8:(NSURL *)fileURL {
     NSError *error = nil;
@@ -397,6 +546,7 @@
     // Files in "/temp/www" load flawlesly :)
     return dstURL;
 }
+
 
 #pragma mark - getter
 
@@ -501,15 +651,6 @@
     return _bridge;
 }
 
-
-//- (NSURLRequest *)originRequest {
-//    if (_isWKWebView) {
-//        return [(WKWebView *)self.webView ];
-//    } else {
-//
-//    }
-//}
-
 - (NSTimer *)timer {
     if (_timer == nil) {
         _timer = [NSTimer scheduledTimerWithTimeInterval:1/60.0 target:self selector:@selector(progressTimerDidFire) userInfo:nil repeats:YES];
@@ -523,4 +664,39 @@
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
 }
+
+- (UIPanGestureRecognizer *)panGes {
+    if (_panGes == nil) {
+        _panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGes:)];
+    }
+    return _panGes;
+}
+
+- (NSMutableArray *)historyStack {
+    if (_historyStack == nil) {
+        _historyStack = @[].mutableCopy;
+    }
+    return _historyStack;
+}
+
+- (UIImageView *)historyView {
+    if (_historyView == nil) {
+        CGRect frame = self.bounds;
+        frame.origin.x -= kOriginHistoryViewX;
+        _historyView = [[UIImageView alloc] initWithFrame:frame];
+    }
+    return _historyView;
+}
+
+- (UIView *)historyMaskView {
+    if (_historyMaskView == nil) {
+        _historyMaskView = [[UIView alloc] init];
+        _historyMaskView.backgroundColor = [UIColor blackColor];
+        _historyMaskView.alpha = 0.5;
+        _historyMaskView.frame = self.historyView.bounds;
+        NSLog(@"%@", NSStringFromCGRect(_historyMaskView.frame));
+    }
+    return _historyMaskView;
+}
+
 @end

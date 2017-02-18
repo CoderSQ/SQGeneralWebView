@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 //webview的加载进度 支持kvo
 @property (nonatomic, readonly) double estimatedProgress;
 
+// 当前webview的request
 @property (nonatomic, strong, readonly, nullable) NSURLRequest* currentRequest;
 
 //---- UI 或者 WK 的API
@@ -51,6 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 调整页面大小以适应屏幕 */
 @property (nonatomic) BOOL scalesPageToFit;
+
+#pragma mark - 开启webview右滑返回上一个页面, 默认支持为YES
+@property (nonatomic, assign) BOOL panGesEnable;
+
 
 
 - (nonnull instancetype)initWithFrame:(CGRect)frame;
@@ -69,6 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reload;
 
+// 让webView 回滚到上一个页面
+- (void)goBack;
 
 #pragma mark - interaction with js  use webviewjavascript
 
@@ -76,6 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)callHandler:(NSString*)handlerName;
 - (void)callHandler:(NSString*)handlerName data:(id)data;
 - (void)callHandler:(NSString*)handlerName data:(id)data responseCallback:(WVJBResponseCallback)responseCallback;
+
+
 
 NS_ASSUME_NONNULL_END
 @end
