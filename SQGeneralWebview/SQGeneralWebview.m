@@ -476,6 +476,8 @@
                     [self.webView setFrame:frame];
                     self.historyView.frame = self.bounds;
                     self.historyMaskView.alpha = 0.0;
+//                    self.historyMaskView.frame = self.historyView.bounds;
+//                    self.historyView.hidden= NO;
                 } completion:^(BOOL finished) {
                     [self bringSubviewToFront:self.historyView];
                     [self goBack];
@@ -508,7 +510,7 @@
 - (void) webViewCanGoBackCallBack {
     
     BOOL canGoBack = [self.webView canGoBack];
-    self.historyView.hidden = canGoBack;
+    self.historyView.hidden = !canGoBack;
     if ([self.delegate respondsToSelector:@selector(sq_webView:canGoBack:)]) {
         [self.delegate sq_webView:self canGoBack:canGoBack];
     }
@@ -606,6 +608,14 @@
     
     webView.frame = self.bounds;
     //    webView.delegate = self;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    self.historyView.frame = self.bounds;
+    self.historyMaskView.frame = self.bounds;
+    
+    NSLog(@"frame = %@, frame1 = %@", NSStringFromCGRect(self.historyView.frame), NSStringFromCGRect(self.historyMaskView.frame));
 }
 
 
@@ -724,6 +734,7 @@
         CGRect frame = self.bounds;
         frame.origin.x -= kOriginHistoryViewX;
         _historyView = [[UIImageView alloc] initWithFrame:frame];
+        _historyView.backgroundColor = [UIColor blueColor];
     }
     return _historyView;
 }
@@ -734,7 +745,6 @@
         _historyMaskView.backgroundColor = [UIColor blackColor];
         _historyMaskView.alpha = 0.5;
         _historyMaskView.frame = self.historyView.bounds;
-        NSLog(@"%@", NSStringFromCGRect(_historyMaskView.frame));
     }
     return _historyMaskView;
 }
