@@ -62,7 +62,8 @@
 - (SQGeneralWebView *)webViews {
     if (_webViews == nil) {
         NSLog(@"%@", NSStringFromCGRect(self.view.bounds));
-        _webViews = [[SQGeneralWebView alloc] initWithFrame:self.view.bounds];
+        _webViews = [[SQGeneralWebView alloc] init];
+        _webViews.frame = self.view.bounds;
         _webViews.delegate = self;
         
         [self.view addSubview:_webViews];

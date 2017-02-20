@@ -368,6 +368,8 @@
     if ([self.delegate respondsToSelector:@selector(sq_webViewDidStartLoad:)]) {
         [self.delegate sq_webViewDidStartLoad:self];
     }
+    
+    [self webViewCanGoBackCallBack];
 }
 
 - (void)callback_webViewDidFinishLoad {
@@ -383,6 +385,8 @@
         [self.webView setFrame:self.bounds];
 
     }
+    
+    [self webViewCanGoBackCallBack];
 }
 
 - (void)callback_webViewDidFailLoadWithError:(NSError *)error {
@@ -397,6 +401,8 @@
         [self sendSubviewToBack:self.historyView];
         [self.webView setFrame:self.bounds];
     }
+    
+    [self webViewCanGoBackCallBack];
 }
 
 
@@ -417,25 +423,6 @@
     [self.bridge callHandler:handlerName data:data responseCallback:responseCallback];
 }
 
-#pragma mark - 开启webview右滑返回上一个页面, 默认支持为YES
-- (void) setPanGesEnable:(BOOL)panGesEnable {
-    _panGesEnable = panGesEnable;
-    if (panGesEnable) {
-        
-        [self addSubview:self.historyView];
-        [self.webView addGestureRecognizer:self.panGes];
-        [self sendSubviewToBack:self.historyView];
-        [self.historyView addSubview:self.historyMaskView];
-    } else {
-        
-        [self.historyView removeFromSuperview];
-        [self.historyMaskView removeFromSuperview];
-        [self removeGestureRecognizer:self.panGes];
-
-        self.panGes = nil;
-        self.historyView = nil;
-    }
-}
 
 #pragma mark -events
 - (void) progressTimerDidFire {
@@ -453,12 +440,23 @@
 
 - (void )panGes:(UIPanGestureRecognizer*)panGes {
 
+    NSLog(@"----------");
+    if (panGes.state == UIGestureRecognizerStateBegan) {
+        CGFloat startPosX = [panGes locationInView:self.window].x;
+        if (startPosX > kOriginHistoryViewX) {
+            startPosX = -1;
+        }
+        self.gesPosStartX = startPosX;
+    }
+    
+    if (self.gesPosStartX < 0) { // 不处理超过90宽度位置后面的手势
+        return ;
+    }
+    
+    
     if ([self.webView canGoBack] && self.historyStack.count) {
 
-        if (panGes.state == UIGestureRecognizerStateBegan) {
-           
-            self.gesPosStartX = [panGes locationInView:self.window].x;
-        } else if (panGes.state == UIGestureRecognizerStateChanged) {
+        if (panGes.state == UIGestureRecognizerStateChanged) {
             
             CGFloat marginX = [panGes locationInView:self.window].x - self.gesPosStartX;
             
@@ -491,9 +489,30 @@
             }
         }
     }
+//    else { // 处理无返回数据的情况
+////        if (panGes.state == UIGestureRecognizerStateChanged) {
+////            if ([self.delegate respondsToSelector:@selector(sq_webViewShouldGoBack:)]) {
+////                [self.delegate sq_webViewShouldGoBack:self];
+////            }
+////        } else if (panGes.state == UIGestureRecognizerStateEnded) {
+////            
+////            if ([self.delegate respondsToSelector:@selector(sq_webViewShouldGoBack:)]) {
+////                [self.delegate sq_webViewShouldGoBack:self];
+////            }
+////        }
+//    }
 }
 
 #pragma mark - private
+
+- (void) webViewCanGoBackCallBack {
+    
+    BOOL canGoBack = [self.webView canGoBack];
+    self.historyView.hidden = canGoBack;
+    if ([self.delegate respondsToSelector:@selector(sq_webView:canGoBack:)]) {
+        [self.delegate sq_webView:self canGoBack:canGoBack];
+    }
+}
 
 - (void) setupSubViewsFrameWithMargin:(CGFloat) marginX {
     
@@ -547,32 +566,6 @@
     return dstURL;
 }
 
-
-#pragma mark - getter
-
-- (NSString *)title {
-    if (_isWKWebView) {
-        return [(WKWebView *)self.webView title];
-    } else {
-        return [(UIWebView *)self.webView  stringByEvaluatingJavaScriptFromString:@"document.title"];
-    }
-}
-
--(id)webView {
-    if (_webView == nil) {
-        if (_isWKWebView) {
-            [self setupWKWebView];
-        } else {
-            [self setupUIWebView];
-        }
-        
-        NSLog(@"frame = %@", NSStringFromCGRect( [(UIView *)_webView frame]));
-        [self addSubview:_webView];
-    }
-    
-    return _webView;
-}
-
 - (void) setupWKWebView {
     
     
@@ -613,6 +606,53 @@
     
     webView.frame = self.bounds;
     //    webView.delegate = self;
+}
+
+
+#pragma mark - setter
+#pragma mark - 开启webview右滑返回上一个页面, 默认支持为YES
+- (void) setPanGesEnable:(BOOL)panGesEnable {
+    _panGesEnable = panGesEnable;
+    if (panGesEnable) {
+        
+        [self addSubview:self.historyView];
+        [self sendSubviewToBack:self.historyView];
+        [self.historyView addSubview:self.historyMaskView];
+    } else {
+        
+        [self.historyView removeFromSuperview];
+        [self.historyMaskView removeFromSuperview];
+        [self removeGestureRecognizer:self.panGes];
+        
+        self.panGes = nil;
+        self.historyView = nil;
+    }
+}
+
+#pragma mark - getter
+
+- (NSString *)title {
+    if (_isWKWebView) {
+        return [(WKWebView *)self.webView title];
+    } else {
+        return [(UIWebView *)self.webView  stringByEvaluatingJavaScriptFromString:@"document.title"];
+    }
+}
+
+-(id)webView {
+    if (_webView == nil) {
+        if (_isWKWebView) {
+            [self setupWKWebView];
+        } else {
+            [self setupUIWebView];
+        }
+        
+        self.panGesEnable ? [self.webView addGestureRecognizer:self.panGes] : nil;
+        
+        [self addSubview:_webView];
+    }
+    
+    return _webView;
 }
 
 - (UIScrollView *)scrollView {

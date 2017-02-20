@@ -19,12 +19,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
+#pragma mark - webview相关代理方法
 - (BOOL)sq_webView:(nonnull SQGeneralWebView *)webView shouldStartLoadWithRequest:(nonnull NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
 
 - (void)sq_webViewDidStartLoad:(nonnull SQGeneralWebView *)webView;
 - (void)sq_webViewDidFinishLoad:(nonnull SQGeneralWebView *)webView;
 - (void)sq_webView:(nonnull SQGeneralWebView *)webView didFailLoadWithError:(nullable NSError *)error;
 
+#pragma mark -右滑手势相关代理方法
+
+// 返回当前webview是否可以goBack, 当goBack状态改变时会调用这个方法
+- (void)sq_webView:(SQGeneralWebView *)webView canGoBack:(BOOL) canGoBack;
+// 这个方法在右滑返回时，如果webview没有可返回的页面时调用:通知代理，这是最后一个页面，并且用户使用了返回手势
+//- (void) sq_webViewShouldGoBack:(nonnull SQGeneralWebView*)webView;
 @end
 
 @interface SQGeneralWebView : UIView

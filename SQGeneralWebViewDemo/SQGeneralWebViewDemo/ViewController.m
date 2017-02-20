@@ -72,6 +72,22 @@
     [self.webViews.scrollView.mj_header endRefreshing];
 }
 
+- (void)sq_webView:(SQGeneralWebView *)webView canGoBack:(BOOL)canGoBack {
+    self.navigationController.interactivePopGestureRecognizer.enabled = !canGoBack;
+}
+
+//- (void)sq_webViewShouldGoBack:(SQGeneralWebView *)webView {
+//    
+////    NSLog(@"%@", NSStringFromSelector(_cmd));
+////    if (self.navigationController) {
+////        NSMutableArray *gestureTargets = [self.navigationController.interactivePopGestureRecognizer valueForKey:@"_targets"];
+////        id gestureTarget = [gestureTargets firstObject];
+////        id navPanTarget_ = [gestureTarget valueForKey:@"_target"];
+////        SEL navPanAction_ = NSSelectorFromString(@"handleNavigationTransition:");
+////        [navPanTarget_ performSelector:navPanAction_ withObject:nil];
+////    }
+//}
+
 #pragma getter
 - (SQGeneralWebView *)webViews {
     if (_webViews == nil) {
